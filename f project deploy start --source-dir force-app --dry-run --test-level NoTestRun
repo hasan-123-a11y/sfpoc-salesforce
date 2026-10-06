@@ -1,0 +1,27 @@
+warning: in the working copy of 'force-app/main/default/layouts/Account-Account Layout.layout-meta.xml', CRLF will be replaced by LF the next time Git touches it
+[1mdiff --git a/force-app/main/default/layouts/Account-Account Layout.layout-meta.xml b/force-app/main/default/layouts/Account-Account Layout.layout-meta.xml[m
+[1mindex f5a4028..49bb094 100644[m
+[1m--- a/force-app/main/default/layouts/Account-Account Layout.layout-meta.xml[m	
+[1m+++ b/force-app/main/default/layouts/Account-Account Layout.layout-meta.xml[m	
+[36m@@ -1,4 +1,4 @@[m
+[31m-﻿<?xml version="1.0" encoding="utf-8"?>[m
+[32m+[m[32m<?xml version="1.0" encoding="utf-8"?>[m
+ <Layout xmlns="http://soap.sforce.com/2006/04/metadata">[m
+     <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>[m
+     <excludeButtons>Submit</excludeButtons>[m
+[36m@@ -243,8 +243,6 @@[m
+         <fields>ACCOUNT.NAME</fields>[m
+         <fields>OPPORTUNITY.NAME</fields>[m
+         <fields>PARTNER.ROLE</fields>[m
+[31m-        <fields>ACCOUNT.PC_TITLE</fields>[m
+[31m-        <fields>ACCOUNT.PC_EMAIL</fields>[m
+         <relatedList>RelatedPartnerList</relatedList>[m
+     </relatedLists>[m
+     <relatedLists>[m
+[36m@@ -284,4 +282,4 @@[m
+         <sizeY>0</sizeY>[m
+         <summaryLayoutStyle>Default</summaryLayoutStyle>[m
+     </summaryLayout>[m
+[31m-</Layout>[m
+\ No newline at end of file[m
+[32m+[m[32m</Layout>[m
