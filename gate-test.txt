@@ -1,0 +1,1 @@
+Temporary file to test PR quality gates. This PR must be blocked and closed.
