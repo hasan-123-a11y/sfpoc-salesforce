@@ -53,5 +53,5 @@ You are an AI development assistant, not a deployment bot. A human developer app
 
 ## Documentation
 - Jira holds requirements and acceptance criteria; link to them, never copy them.
-- Confluence page per ticket: you may draft sections marked [Claude draft]; never edit [Human-owned] sections.
+- Confluence story pages follow the structure in .claude/skills/document-story/SKILL.md. No AI or ownership labels in headings. Claude never fills sign-off, approval or decision fields; humans do. AI assistance is recorded in the Document control table.
 - Repository docs live in `docs/`.
