@@ -1,6 +1,6 @@
 ## Jira ticket
-<!-- Required. Example: TJDG-1 -->
-TJDG-
+<!-- Required. Example: SFPOC-1 -->
+SFPOC-
 
 ## Summary
 <!-- One or two sentences: what this PR does. -->
@@ -30,7 +30,7 @@ TJDG-
 - [ ] Parts of this change were generated with Claude, and every change has been reviewed by a human
 
 ## Checklist
-- [ ] Branch name follows `feature/TJDG-<n>-<description>`
+- [ ] Branch name follows `feature/SFPOC-<n>-<description>`
 - [ ] Commit messages start with the Jira key
 - [ ] No secrets, credentials, usernames or org IDs in the diff
 - [ ] Git diff reviewed by the developer
