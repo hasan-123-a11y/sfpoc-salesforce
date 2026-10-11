@@ -14,3 +14,4 @@ Ship the approved work for $ARGUMENTS following CLAUDE.md. Never merge.
 6. Create a PR into develop titled "$ARGUMENTS <Jira summary>". Fill .github/pull_request_template.md completely and honestly; leave "Git diff reviewed by the developer" unticked.
 7. Add a comment to Jira issue $ARGUMENTS with the PR link.
 8. Show the PR URL and run gh pr checks.
+9. Then follow .claude/skills/document-story/SKILL.md for $ARGUMENTS and wait for my approval before publishing.
