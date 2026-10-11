@@ -1,0 +1,89 @@
+name: PR quality gates
+
+on:
+  pull_request:
+    branches: [develop, main]
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  pr-hygiene:
+    name: PR hygiene
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branch name, Jira key and PR description
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          BASE_REF: ${{ github.base_ref }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          set -uo pipefail
+          fail=0
+          echo "PR: $HEAD_REF -> $BASE_REF"
+
+          # 1. Branch naming
+          if [[ "$HEAD_REF" =~ ^feature/SFPOC-[0-9]+-[a-z0-9._-]+$ ]]; then
+            kind="feature"
+          elif [[ "$HEAD_REF" =~ ^(release|hotfix)/ || "$HEAD_REF" =~ ^gs- || "$HEAD_REF" == "develop" || "$HEAD_REF" == "main" ]]; then
+            kind="pipeline"
+          else
+            echo "::error::Branch '$HEAD_REF' must follow feature/SFPOC-<number>-<lowercase-description>."
+            fail=1; kind="invalid"
+          fi
+
+          # 2. Gitflow direction
+          if [[ "$BASE_REF" == "main" && ! ( "$HEAD_REF" =~ ^(release|hotfix)/ || "$HEAD_REF" =~ ^gs- ) ]]; then
+            echo "::error::main only accepts release/ or hotfix/ branches. Feature work must target develop."
+            fail=1
+          fi
+
+          # 3. Feature PRs: Jira key in title and description, template completed
+          if [[ "$kind" == "feature" ]]; then
+            key=$(grep -oE 'SFPOC-[0-9]+' <<< "$HEAD_REF" | head -n1)
+            if [[ "$PR_TITLE" != "$key "* ]]; then
+              echo "::error::PR title must start with '$key ' (Jira key from the branch name)."
+              fail=1
+            fi
+            if [[ -z "${PR_BODY//[[:space:]]/}" ]]; then
+              echo "::error::PR description is empty. Use the PR template."
+              fail=1
+            else
+              grep -q "$key" <<< "$PR_BODY" || { echo "::error::PR description must reference $key."; fail=1; }
+              grep -qE 'Destructive changes:[[:space:]]*YES / NO' <<< "$PR_BODY" && { echo "::error::Choose YES or NO for 'Destructive changes'."; fail=1; }
+              grep -qE 'Deployment risk:[[:space:]]*LOW / MEDIUM / HIGH' <<< "$PR_BODY" && { echo "::error::Choose LOW, MEDIUM or HIGH for 'Deployment risk'."; fail=1; }
+            fi
+          fi
+
+          if [[ $fail -ne 0 ]]; then exit 1; fi
+          echo "PR hygiene checks passed."
+
+  static-analysis:
+    name: Salesforce Code Analyzer
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Salesforce CLI and Code Analyzer
+        run: |
+          npm install --global @salesforce/cli
+          sf plugins install code-analyzer
+      - name: Run Code Analyzer (fails on High or Critical findings)
+        run: sf code-analyzer run --workspace force-app --severity-threshold 2 --output-file code-analyzer-results.html
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-analyzer-report
+          path: code-analyzer-results.html

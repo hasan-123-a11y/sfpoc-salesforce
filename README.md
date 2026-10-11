@@ -12,14 +12,14 @@ It is a proof of concept intended to replace manual Change Set deployments.
 
 | Item | Value |
 |---|---|
-| Jira story | `TJDG-1` — Create Account Health Status |
+| Jira story | `SFPOC-1` — Create Account Health Status |
 | Change | `Account.Health_Status__c` picklist (Healthy, At Risk, Critical), added to the Account layout |
 
 ## Branching
 
 | Branch | Purpose | Deploys to (via Gearset) |
 |---|---|---|
-| `feature/TJDG-<n>-<description>` | One Jira issue, created from `develop` | — (validated against DEV) |
+| `feature/SFPOC-<n>-<description>` | One Jira issue, created from `develop` | — (validated against DEV) |
 | `develop` (default) | Integration | DEV |
 | `release/<name>` | Release candidate, created by Gearset | UAT |
 | `main` | Production-ready | PROD (after approval) |
@@ -28,8 +28,8 @@ Direct pushes to `develop` and `main` are blocked. All changes arrive through Pu
 
 ## Conventions
 
-- Commit: `TJDG-<n> <imperative summary>` — e.g. `TJDG-1 Add Account Health Status`
-- Pull Request title: `TJDG-<n> <story title>`
+- Commit: `SFPOC-<n> <imperative summary>` — e.g. `SFPOC-1 Add Account Health Status`
+- Pull Request title: `SFPOC-<n> <story title>`
 - Every Pull Request uses the template in `.github/pull_request_template.md`
 
 ## Repository structure
